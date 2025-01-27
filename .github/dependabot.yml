@@ -8,7 +8,11 @@ updates:
       - "/e2e"
       - "/tools/analyzers"
     schedule:
+<<<<<<< HEAD
       interval: "weekly"
+=======
+      interval: "daily"
+>>>>>>> e6f6a832 (RHCLOUD-37468: workflow bootstrapping)
     labels:
       - "area/dependencies"
     groups:
@@ -26,7 +30,7 @@ updates:
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
-      interval: "monthly"
+      interval: "daily"
     groups:
       github-actions:
         patterns: ["*"]
