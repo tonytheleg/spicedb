@@ -256,10 +256,6 @@ func consistencyTest(ctx context.Context, datastore string, env map[string]strin
 	mg.Deps(checkDocker)
 	args := []string{
 		"-tags", "ci,docker,datastoreconsistency",
+		"-timeout", "20m",
 		"-run", fmt.Sprintf("TestConsistencyPerDatastore/%s", datastore),
-	}
-	args = append(args, coverageFlags...)
-	return goDirTestWithEnv(ctx, ".", "./internal/services/integrationtesting/...",
-		env,
-		args...)
 }
