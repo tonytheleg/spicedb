@@ -41,8 +41,7 @@ func (t Test) Unit(ctx context.Context) error {
 }
 
 func (Test) unit(ctx context.Context, coverage bool) error {
-	fmt.Println("running unit tests")
-	args := []string{"-tags", "ci,skipintegrationtests", "-race", "-timeout", "20m", "-count=1"}
+	args := []string{"-tags", "ci,skipintegrationtests", "-race", "-timeout", "10m", "-count=1"}
 	if coverage {
 		fmt.Println("running unit tests with coverage")
 		args = append(args, coverageFlags...)
@@ -254,9 +253,12 @@ func (Testcons) Mysql(ctx context.Context) error {
 
 func consistencyTest(ctx context.Context, datastore string, env map[string]string) error {
 	mg.Deps(checkDocker)
+	args := []string{
+		"-tags", "ci,docker,datastoreconsistency",
+		"-run", fmt.Sprintf("TestConsistencyPerDatastore/%s", datastore),
+	}
+	args = append(args, coverageFlags...)
 	return goDirTestWithEnv(ctx, ".", "./internal/services/integrationtesting/...",
 		env,
-		"-tags", "ci,docker,datastoreconsistency",
-		"-timeout", "20m",
-		"-run", fmt.Sprintf("TestConsistencyPerDatastore/%s", datastore))
+		args...)
 }
